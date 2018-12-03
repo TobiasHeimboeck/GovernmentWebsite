@@ -4,8 +4,6 @@
  * Last edited 3.12.2018
  */
 
-console.log("debug1");
-
 let content = data.results[0].members; // get all members from the json data
 
 var statistics = [
@@ -37,26 +35,14 @@ storeInTable();
 function storeInTable() {
     /*=================== Senate at a glance ===================*/
 
-    // row 1
-    var republican_row = document.getElementById("republican-row");
-    var republican_td = republican_row.getElementsByTagName("td");
+    var republicanField = document.getElementById("republican-row").getElementsByTagName("td")[1];
+    var republicanVotedWithPartyField = document.getElementById("republican-row").getElementsByTagName("td")[2];
 
-    // row 2
-    var democrate_row = document.getElementById("democrat-row");
-    var democrate_td = democrate_row.getElementsByTagName("td");
+    var democrateField = document.getElementById("democrat-row").getElementsByTagName("td")[1];
+    var democrateVotedWithPartyField = document.getElementById("democrat-row").getElementsByTagName("td")[2];
 
-    // row 3
-    var independent_row = document.getElementById("independent-row");
-    var independent_td = independent_row.getElementsByTagName("td");
-
-    var republicanField = republican_td[1];
-    var republicanVotedWithPartyField = republican_td[2];
-
-    var democrateField = democrate_td[1];
-    var democrateVotedWithPartyField = democrate_td[2];
-
-    var independentField = independent_td[1];
-    var independentVotedWithPartyField = independent_td[2];
+    var independentField = document.getElementById("independent-row").getElementsByTagName("td")[1];
+    var independentVotedWithPartyField = document.getElementById("independent-row").getElementsByTagName("td")[2];
 
     republicanField.innerHTML = statistics[0]["Number of Republicans"];
     republicanVotedWithPartyField.innerHTML = statistics[0]["Avarage 'Votes with party' for Republicans"] + "%";
@@ -68,9 +54,38 @@ function storeInTable() {
     independentVotedWithPartyField.innerHTML = statistics[0]["Avarage 'Votes with party' for Independents"] + "%";
 
     /*=================== Senate at a glance ===================*/
+
+    /*=================== Least loyal ===================*/
+
+    var lowestTenPercent = getLowestTenPercentOfVoters();
+
+    for (var i = 0; i < lowestTenPercent.length; i++) {
+        var row = document.createElement("tr");
+        var senatorName = statistics[0]["Least loyal names"][i];
+
+        var link = document.createElement("a");
+        link.setAttribute("href", lowestTenPercent[i].url);
+
+        var text = document.createTextNode(senatorName);
+
+        link.appendChild(text);
+
+        row.insertCell().appendChild(link);
+        row.insertCell().innerHTML = statistics[0]["Least loyal number of votes"][i];
+        row.insertCell().innerHTML = statistics[0]["Least loyal percentage party votes"][i] + " %";
+        document.getElementById("least").appendChild(row);
+    }
+
+    /*=================== Least loyal ===================*/
 }
 
 function cachePartyMemberCounts() {
+
+    console.log(getBottomTenPercentOfMissedVotes());
+
+    var bottomTenPercentOfMissedVotesArray = getBottomTenPercentOfMissedVotes();
+
+    console.log(getFullname(bottomTenPercentOfMissedVotesArray));
 
     var democrats = getSenatorsWithSameParty("D");
     var republicans = getSenatorsWithSameParty("R");
@@ -82,6 +97,38 @@ function cachePartyMemberCounts() {
     statistics[0]["Avarage 'Votes with party' for Democrates"] = getAverageVotes(democrats);
     statistics[0]["Avarage 'Votes with party' for Republicans"] = getAverageVotes(republicans);
     statistics[0]["Avarage 'Votes with party' for Independents"] = getAverageVotes(independents);
+
+    statistics[0]["Least loyal names"] = getFullname(getLowestTenPercentOfVoters());
+    statistics[0]["Least loyal number of votes"] = getTotalVotes(getLowestTenPercentOfVoters());
+    statistics[0]["Least loyal percentage party votes"] = getPartyPercentage(getLowestTenPercentOfVoters());
+}
+
+function getPartyPercentage(array) {
+    var empty = [];
+    for (i = 0; i < array.length; i++) {
+        empty.push(array[i].votes_with_party_pct);
+    }
+    return empty;
+}
+
+function getFullname(array) {
+    var name = [];
+    for (i = 0; i < array.length; i++) {
+        if (array[i].middle_name == null) {
+            name.push(array[i].first_name + " " + array[i].last_name);
+        } else {
+            name.push(array[i].first_name + " " + array[i].middle_name + " " + array[i].last_name);
+        }
+    }
+    return name;
+}
+
+function getTotalVotes(array) {
+    var empty = [];
+    for (i = 0; i < array.length; i++)
+        empty.push(array[i].total_votes);
+
+    return empty;
 }
 
 function getSenatorsWithSameParty(party) {
@@ -96,13 +143,63 @@ function getSenatorsWithSameParty(party) {
     return senatorsWithParty;
 }
 
-function getAverageVotes(senatorsParty) {
+function getAverageVotes(party) {
     var sum = 0;
 
-    for (i = 0; i < senatorsParty.length; i++)
-        sum += senatorsParty[i].votes_with_party_pct;
+    for (i = 0; i < party.length; i++)
+        sum += party[i].votes_with_party_pct;
 
-    return Math.round(sum / senatorsParty.length * 100) / 100;;
+    return Math.round(sum / party.length * 100) / 100;;
+}
+
+function getBottomTenPercentOfMissedVotes() {
+    var votes = [];
+    var lowestTenPercent = [];
+
+    content.sort(function (a, b) {
+        return a.missed_votes_pct - b.missed_votes_pct;
+    });
+    for (i = 0; i < content.length; i++) {
+        votes.push(content[i]);
+    }
+
+    for (i = 0; i < votes.length; i++) {
+        if (i < ((votes.length) * 0.1)) {
+            lowestTenPercent.push(votes[i]);
+        } else if (votes[i] == votes[i - 1]) {
+            lowestTenPercent.push(votes[i]);
+        } else {
+            break;
+        }
+    }
+
+    return lowestTenPercent;
+}
+
+function getLowestTenPercentOfVoters() {
+    var votes = [];
+    var lowestTenPercent = [];
+
+    content.sort(function (a, b) {
+        return a.votes_with_party_pct - b.votes_with_party_pct;
+    });
+
+    for (i = 0; i < content.length; i++) {
+        votes.push(content[i]);
+    }
+
+    for (i = 0; i < votes.length; i++) {
+
+        if (i < ((votes.length) * 0.1)) {
+            lowestTenPercent.push(votes[i]);
+        } else if (votes[i] == votes[i - 1]) {
+            lowestTenPercent.push(votes[i]);
+        } else {
+            break;
+        }
+
+    }
+    return lowestTenPercent;
 }
 
 function getCountOfParty(party) {
