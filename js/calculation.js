@@ -31,25 +31,6 @@ var statistics = [
 
 cachePartyMemberCounts();
 
-function calculatePartyMembers() {
-    var democratesCount = [];
-    var republicanCount = [];
-    var independentsCount = [];
-
-    for (var i = 0; i < content.length; i++) {
-        var senator = content[i];
-        if (senator.party === "D") {
-            democratesCount.push(senator);
-        } else if (senator.party === "R") {
-            republicanCount.push(senator);
-        } else if (senator.party === "I") {
-            independentsCount.push(senator);
-        }
-    }
-
-    return democratesCount.length + ":" + republicanCount.length + ":" + independentsCount.length;
-}
-
 function cachePartyMemberCounts() {
     statistics[0]["Number of Democrates"] = getCountOfParty("D");
     statistics[0]["Number of Republicans"] = getCountOfParty("R");
