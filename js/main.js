@@ -1,8 +1,8 @@
 /**
  * Copyright Notice
  * Created by Tobias Heimböck
- * Last edited 3.12.2018
- */
+ * Last edited 4.12.2018
+*/
 
 let content = data.results[0].members; // get all members from the json data
 
