@@ -47,6 +47,9 @@ function storeInTable() {
     var independentField = document.getElementById("independent-row").getElementsByTagName("td")[1];
     var independentVotedWithPartyField = document.getElementById("independent-row").getElementsByTagName("td")[2];
 
+    var totalField = document.getElementById("total-row").getElementsByTagName("td")[1];
+    var totalVotedWithPartyField = document.getElementById("total-row").getElementsByTagName("td")[2];
+
     republicanField.innerHTML = statistics[0]["republicans_count"];
     republicanVotedWithPartyField.innerHTML = statistics[0]["republicans_average_votes_with_party"] + "%";
 
@@ -56,125 +59,58 @@ function storeInTable() {
     independentField.innerHTML = statistics[0]["independents_count"];
     independentVotedWithPartyField.innerHTML = statistics[0]["independents_average_votes_with_party"] + "%";
 
+    totalField.innerHTML = content.length;
+
+    if (statistics[0]["independents_count"] === 0)
+        totalVotedWithPartyField.innerHTML = Math.round(((statistics[0]["democrats_average_votes_with_party"] + statistics[0]["republicans_average_votes_with_party"] + statistics[0]["independents_average_votes_with_party"]) / 2) * 100) / 100 + "%";
+    else
+        totalVotedWithPartyField.innerHTML = Math.round(((statistics[0]["democrats_average_votes_with_party"] + statistics[0]["republicans_average_votes_with_party"] + statistics[0]["independents_average_votes_with_party"]) / 3) * 100) / 100 + "%";
+
     /*=================== Senate at a glance ===================*/
 
     /*=================== Least loyal ===================*/
 
-    if (document.getElementById("least") !== null) {
-
-        var lowestTenPercent = getLowestTenPercentOfVoters();
-
-        for (var i = 0; i < lowestTenPercent.length; i++) {
-            var row = document.createElement("tr");
-            var senatorName = statistics[0]["least_loyal_names"][i];
-
-            var link = document.createElement("a");
-            link.setAttribute("href", lowestTenPercent[i].url);
-
-            var text = document.createTextNode(senatorName);
-
-            link.appendChild(text);
-
-            row.insertCell()
-                .appendChild(link);
-
-            row.insertCell()
-                .innerHTML = statistics[0]["least_loyal_number_of_votes"][i];
-
-            row.insertCell()
-                .innerHTML = statistics[0]["least_loyal_percentage_party_votes"][i] + " %";
-
-            document.getElementById("least")
-                .appendChild(row);
-        }
-    }
+    fillTable("least", getTenPercentOfVoters("lowest"), "least_loyal_names", "least_loyal_number_of_votes", "least_loyal_percentage_party_votes");
 
     /*=================== Least loyal ===================*/
 
     /*=================== Most loyal ===================*/
 
-    if (document.getElementById("most") !== null) {
-
-        var highestTenPercent = getHighestTenPercentOfVoters();
-
-        for (var i = 0; i < highestTenPercent.length; i++) {
-            var row = document.createElement("tr");
-            var senatorName = statistics[0]["most_loyal_names"][i];
-
-            var link = document.createElement("a");
-            link.setAttribute("href", highestTenPercent[i].url);
-
-            var text = document.createTextNode(senatorName);
-
-            link.appendChild(text);
-
-            row.insertCell().appendChild(link);
-            row.insertCell().innerHTML = statistics[0]["most_loyal_number_of_votes"][i];
-            row.insertCell().innerHTML = statistics[0]["most_loyal_percentage_party_votes"][i] + "%";
-
-            document.getElementById("most").appendChild(row);
-        }
-    }
+    fillTable("most", getTenPercentOfVoters("highest"), "most_loyal_names", "most_loyal_number_of_votes", "most_loyal_percentage_party_votes");
 
     /*=================== Most loyal ===================*/
 
     /*=================== Senate at glance ===================*/
 
-    if (document.getElementById("least-engaged") !== null) {
+    fillTable("least-engaged", getTenPercentOfMissedVotes("top"), "least_engaged_names", "least_engaged_number_missed_votes", "least_engaged_percentage_missed_votes");
 
-        var table = document.getElementById("least-engaged");
-        var leastEngaged = getTenPercentOfMissedVotes("top");
-
-        for (var i = 0; i < leastEngaged.length; i++) {
-            var row = document.createElement("tr");
-            var senatorName = statistics[0]["least_engaged_names"][i];
-
-            var link = document.createElement("a");
-            link.setAttribute("href", leastEngaged[i].url);
-
-            var text = document.createTextNode(senatorName);
-
-            link.appendChild(text);
-
-            row.insertCell()
-                .appendChild(link);
-            row.insertCell()
-                .innerHTML = statistics[0]["least_engaged_number_missed_votes"][i];
-            row.insertCell()
-                .innerHTML = statistics[0]["least_engaged_percentage_missed_votes"][i] + "%";
-
-            table.appendChild(row);
-        }
-    }
-
-    if (document.getElementById("most-engaged") !== null) {
-
-        var table = document.getElementById("most-engaged");
-        var mostEngaged = getTenPercentOfMissedVotes("bottom");
-
-        for (var i = 0; i < mostEngaged.length; i++) {
-            var row = document.createElement("tr");
-            var senatorName = statistics[0]["most_engaged_names"][i];
-
-            var link = document.createElement("a");
-            link.setAttribute("href", mostEngaged[i].url);
-
-            var text = document.createTextNode(senatorName);
-
-            link.appendChild(text);
-
-            row.insertCell()
-                .appendChild(link);
-            row.insertCell()
-                .innerHTML = statistics[0]["most_engaged_number_missed_votes"][i];
-            row.insertCell()
-                .innerHTML = statistics[0]["most_engaged_percentage_missed_votes"][i];
-
-            table.appendChild(row);
-        }
-    }
+    fillTable("most-engaged", getTenPercentOfMissedVotes("bottom"), "most_engaged_names", "most_engaged_number_missed_votes", "most_engaged_percentage_missed_votes");
 
     /*=================== Senate at glance ===================*/
+}
+
+function fillTable(tableID, content1, content2, content3, content4) {
+    if (document.getElementById(tableID) !== null) {
+        var table = document.getElementById(tableID);
+        var tableContent = content1;
+
+        for (var i = 0; i < tableContent.length; i++) {
+            var row = document.createElement("tr");
+            var senatorName = statistics[0][content2][i];
+
+            var link = document.createElement("a");
+            link.setAttribute("href", tableContent[i].url);
+
+            var text = document.createTextNode(senatorName);
+            link.appendChild(text);
+
+            row.insertCell().appendChild(link);
+            row.insertCell().innerHTML = statistics[0][content3][i];
+            row.insertCell().innerHTML = statistics[0][content4][i];
+
+            table.appendChild(row);
+        }
+    }
 }
 
 function cachePartyMemberCounts() {
@@ -190,13 +126,13 @@ function cachePartyMemberCounts() {
     statistics[0]["republicans_average_votes_with_party"] = getAverageVotes(republicans);
     statistics[0]["independents_average_votes_with_party"] = getAverageVotes(independents);
 
-    statistics[0]["least_loyal_names"] = getFullname(getLowestTenPercentOfVoters());
-    statistics[0]["least_loyal_number_of_votes"] = getTotalCountOfVotes(getLowestTenPercentOfVoters());
-    statistics[0]["least_loyal_percentage_party_votes"] = getPartyPercentage(getLowestTenPercentOfVoters());
+    statistics[0]["least_loyal_names"] = getFullname(getTenPercentOfVoters("lowest"));
+    statistics[0]["least_loyal_number_of_votes"] = getTotalCountOfVotes(getTenPercentOfVoters("lowest"));
+    statistics[0]["least_loyal_percentage_party_votes"] = getPartyPercentage(getTenPercentOfVoters("lowest"));
 
-    statistics[0]["most_loyal_names"] = getFullname(getHighestTenPercentOfVoters());
-    statistics[0]["most_loyal_number_of_votes"] = getTotalCountOfVotes(getHighestTenPercentOfVoters());
-    statistics[0]["most_loyal_percentage_party_votes"] = getPartyPercentage(getHighestTenPercentOfVoters());
+    statistics[0]["most_loyal_names"] = getFullname(getTenPercentOfVoters("highest"));
+    statistics[0]["most_loyal_number_of_votes"] = getTotalCountOfVotes(getTenPercentOfVoters("highest"));
+    statistics[0]["most_loyal_percentage_party_votes"] = getPartyPercentage(getTenPercentOfVoters("highest"));
 
     statistics[0]["least_engaged_names"] = getFullname(getTenPercentOfMissedVotes("top"));
     statistics[0]["least_engaged_number_missed_votes"] = getMissedVotes(getTenPercentOfMissedVotes("top"));
@@ -250,75 +186,37 @@ function getAverageVotes(party) {
     for (i = 0; i < party.length; i++)
         average += party[i].votes_with_party_pct;
 
-    return Math.round(average / party.length * 100) / 100;
-}
-
-function getBottomTenPercentOfMissedVotes() {
-    var votes = [];
-    var bottomTenPercent = [];
-
-    content.sort(function (a, b) {
-        return a.missed_votes_pct - b.missed_votes_pct;
-    });
-
-    for (i = 0; i < content.length; i++)
-        votes.push(content[i]);
-
-    for (i = 0; i < votes.length; i++) {
-        if (i < ((votes.length) * 0.1))
-            bottomTenPercent.push(votes[i]);
-        else if (votes[i] == votes[i - 1])
-            bottomTenPercent.push(votes[i]);
+    if (party.length === 0) {
+        return 0;
+    } else {
+        return Math.round(average / party.length * 100) / 100;
     }
-    return bottomTenPercent;
-}
-
-function getLowestTenPercentOfVoters() {
-    var votes = [];
-    var lowestTenPercent = [];
-
-    content.sort(function (a, b) {
-        return a.votes_with_party_pct - b.votes_with_party_pct;
-    });
-
-    for (i = 0; i < content.length; i++)
-        votes.push(content[i]);
-
-    for (i = 0; i < votes.length; i++) {
-        if (i < ((votes.length) * 0.1))
-            lowestTenPercent.push(votes[i]);
-        else if (votes[i] == votes[i - 1])
-            lowestTenPercent.push(votes[i]);
-        else
-            break;
-    }
-    return lowestTenPercent;
-}
-
-function getHighestTenPercentOfVoters() {
-    var votes = [];
-    var highestTenPercent = [];
-
-    content.sort(function (a, b) {
-        return b.votes_with_party_pct - a.votes_with_party_pct;
-    });
-
-    for (i = 0; i < content.length; i++) {
-        votes.push(content[i]);
-    }
-
-    for (i = 0; i < votes.length; i++) {
-        if (i < ((votes.length) * 0.1))
-            highestTenPercent.push(votes[i]);
-        else if (votes[i] == votes[i - 1])
-            highestTenPercent.push(votes[i]);
-        else
-            break;
-    }
-    return highestTenPercent;
 }
 
 /*=========================================================*/
+
+function getTenPercentOfVoters(type) {
+    var votes = [];
+    var tenPercent = [];
+
+    switch (type) {
+        case "bottom":
+            content.sort(function (a, b) {
+                return a.missed_votes_pct - b.missed_votes_pct;
+            });
+            return sortingContent(tenPercent, votes);
+        case "lowest":
+            content.sort(function (a, b) {
+                return a.votes_with_party_pct - b.votes_with_party_pct;
+            });
+            return sortingContent(tenPercent, votes);
+        case "highest":
+            content.sort(function (a, b) {
+                return b.votes_with_party_pct - a.votes_with_party_pct;
+            });
+            return sortingContent(tenPercent, votes);
+    }
+}
 
 function getTenPercentOfMissedVotes(type) {
     var votes = [];
@@ -326,44 +224,31 @@ function getTenPercentOfMissedVotes(type) {
 
     switch (type) {
         case "bottom":
-
             content.sort(function (a, b) {
                 return a.missed_votes_pct - b.missed_votes_pct;
             });
-
-            for (var i = 0; i < content.length; i++)
-                votes.push(content[i]);
-
-            for (var i = 0; i < votes.length; i++) {
-                if (i < ((votes.length) * 0.1))
-                    responseArray.push(votes[i]);
-                else if (votes[i] == votes[i - 1])
-                    responseArray.push(votes[i]);
-            }
-
-            return responseArray;
+            return sortingContent(responseArray, votes);
 
         case "top":
-
             content.sort(function (a, b) {
                 return b.missed_votes_pct - a.missed_votes_pct;
             });
-
-            for (var i = 0; i < content.length; i++)
-                votes.push(content[i]);
-
-            for (var i = 0; i < votes.length; i++) {
-                if (i < ((votes.length) * 0.1))
-                    responseArray.push(votes[i]);
-                else if (votes[i] == votes[i - 1])
-                    responseArray.push(votes[i]);
-            }
-
-            return responseArray;
+            return sortingContent(responseArray, votes);
     }
 }
 
-/*=========================================================*/
+function sortingContent(array, votesArray) {
+    for (var i = 0; i < content.length; i++)
+        votesArray.push(content[i]);
+
+    for (var i = 0; i < votesArray.length; i++) {
+        if (i < ((votesArray.length) * 0.1))
+            array.push(votesArray[i]);
+        else if (votesArray[i] === votesArray[i - 1])
+            array.push(votesArray[i]);
+    }
+    return array;
+}
 
 function getMissedVotes(array) {
     var missedVotesArray = [];
@@ -374,9 +259,8 @@ function getMissedVotes(array) {
 
 function getMissedVotesPercentage(array) {
     var missedPercentaceArray = [];
-    for (i = 0; i < array.length; i++) {
+    for (i = 0; i < array.length; i++)
         missedPercentaceArray.push(array[i].missed_votes_pct);
-    }
     return missedPercentaceArray;
 }
 

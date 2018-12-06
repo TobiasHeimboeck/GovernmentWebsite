@@ -19,7 +19,6 @@
 </head>
 
 <body>
-
     <div class="content">
 
         <div class="col-sm-4 pic">
@@ -46,7 +45,7 @@
                             <a class="dropdown-item" href="house-data.html">House</a>
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li id="selected" class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Attendance
@@ -56,7 +55,7 @@
                             <a class="dropdown-item" href="house-attendance.html">House</a>
                         </div>
                     </li>
-                    <li id="selected" class="nav-item dropdown">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Party Loyalty
@@ -72,7 +71,7 @@
 
         <div class="top-content">
             <div class="top-left-table">
-                <h2>Party Loyalty</h2>
+                <h2>Attendance</h2>
                 <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
                     respectively,
                     tend to be the most faithful in voting for their party's nominee for office and legislation that
@@ -87,7 +86,7 @@
                         <tr>
                             <th>Party</th>
                             <th>Number of Reps</th>
-                            <th>% Voted with Party</th>
+                            <th>% Voted with Prty</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -120,37 +119,38 @@
 
         <div class="bottom-tables">
             <div class="left-table">
-                <h2>Least Loyal (Bottom 10% of Party)</h2>
+                <h2>Least Engaged (Bottom 10% Attendance)</h2>
                 <table class="calc-table">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Number Party Votes</th>
-                            <th>% Party Votes</th>
+                            <th>No. Missed Votes</th>
+                            <th>% Missed</th>
                         </tr>
                     </thead>
-                    <tbody id="least">
+                    <tbody id="least-engaged">
 
                     </tbody>
                 </table>
             </div>
 
             <div class="right-table">
-                <h2>Most Loyal (Top 10% of Party)</h2>
+                <h2>Most Engaged (Top 10% Attendance)</h2>
                 <table class="calc-table">
                     <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Number Party Votes</th>
-                            <th>% Party Votes</th>
+                            <th>No. Missed Votes</th>
+                            <th>% Missed</th>
                         </tr>
                     </thead>
-                    <tbody id="most">
+                    <tbody id="most-engaged">
 
                     </tbody>
                 </table>
             </div>
         </div>
+
     </div>
 
     <script src="js/pro-congress-113-house.js"></script>
