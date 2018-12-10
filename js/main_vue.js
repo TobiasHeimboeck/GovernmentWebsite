@@ -5,15 +5,15 @@ findValidPage();
 function findValidPage() {
     switch (location.href.split("/").slice(-1).toString()) {
         case "senate-data.html":
-            start("https://api.propublica.org/congress/v1/113/senate/members.json");
+            startFetchingAsync("https://api.propublica.org/congress/v1/113/senate/members.json");
             break;
         case "house-data.html":
-            start("https://api.propublica.org/congress/v1/113/house/members.json");
+            startFetchingAsync("https://api.propublica.org/congress/v1/113/house/members.json");
             break;
     }
 }
 
-function start(url) {
+function startFetchingAsync(url) {
     fetch(url, {
         method: "GET",
         headers: new Headers({
@@ -23,6 +23,9 @@ function start(url) {
         return response.json();
     }).then(function (json) {
         data = json;
+
+        console.log(1);
+        console.log(data);
 
         new Vue({
             el: "#main",
@@ -68,5 +71,7 @@ function start(url) {
                 },
             }
         });
+    }).catch(function(error) {
+        console.log(error);
     })
 }

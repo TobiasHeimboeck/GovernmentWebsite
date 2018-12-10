@@ -130,10 +130,16 @@
                         </tr>
                     </thead>
                     <tbody id="least">
-                        <tr v-for="least_names in statistics.least_loyal_names">
-                            <td>{{least_names}}</td>
-                            <td>{{}}</td>
-                            <td>{{}}</td>
+
+                        <tr v-for="least_members in statistics.least_loyal_members">
+                            <td v-if="least_members.middle_name !== null"> <a :href="least_members.url">
+                                    {{least_members.first_name + " " +
+                                    least_members.middle_name + " " + least_members.last_name}}</a></td>
+                            <td v-else="least_members.middle_name === null"><a :href="least_members.url">{{least_members.first_name
+                                    + " " +
+                                    least_members.last_name}}</a></td>
+                            <td>{{least_members.total_votes}}</td>
+                            <td>{{least_members.votes_with_party_pct}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -150,14 +156,22 @@
                         </tr>
                     </thead>
                     <tbody id="most">
-
+                        <tr v-for="most_members in statistics.most_loyal_members">
+                            <td v-if="most_members.middle_name !== null"><a :href="most_members.url">{{most_members.first_name
+                                    + " " +
+                                    most_members.middle_name + " " + most_members.last_name}}</a></td>
+                            <td v-else="most_members.middle_name === null"><a :href="most_members.url">{{most_members.first_name
+                                    + " " +
+                                    most_members.last_name}}</a></td>
+                            <td>{{most_members.total_votes}}</td>
+                            <td>{{most_members.votes_with_party_pct}}</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <script src="js/pro-congress-113-senate.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/calculation_vue.js"></script>
 </body>
