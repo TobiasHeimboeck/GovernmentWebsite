@@ -4,7 +4,7 @@
  * Last edited 4.12.2018
 */
 
-let content = data.results[0].members; // get all members from the json data
+// let content = data.results[0].members; // get all members from the json data
 
 var democrateButton = document.getElementById("democrate-check");
 var republicanButton = document.getElementById("republican-check");

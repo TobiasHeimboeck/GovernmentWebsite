@@ -13,7 +13,7 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="myFunction()">
 
     <div class="content">
 
@@ -68,90 +68,104 @@
             </div>
         </nav>
 
-        <header>
-            <div>
+
+        <div id="loader"></div>
+
+        <div style="display:none;" id="myDiv" class="animate-bottom">
+
+
+            <header>
+                <div>
+                </div>
+            </header>
+            <!--Table container-->
+            <div id="main">
+                <h2>Senators</h2>
+                <p>First convened in 1789, the composition and powers of the Senate are established in Article One of
+                    the
+                    U.S.
+                    Constitution. Each state is represented by two senators, regardless of population, who serve
+                    staggered
+                    six-year terms. The Senate has several exclusive powers not granted to the House, including
+                    consenting
+                    to
+                    treaties as a precondition to their ratification and consenting to or confirming appointments of
+                    Cabinet
+                    secretaries, federal judges, other federal executive officials, military officers, regulatory
+                    officials,
+                    ambassadors, and other federal uniformed officers, as well as trial of federal officials impeached
+                    by
+                    the
+                    House.</p>
+
+                <div class="container-div">
+                    <label id="headline" class="container">
+                        <input id="democrat-check" type="checkbox" name="democrat-check" value="democrat-check" checked
+                            @click="filterSenators">Democrate
+                        <input id="republican-check" type="checkbox" name="republican" value="republican" checked
+                            @click="filterSenators">Republican
+                        <input id="independent-check" type="checkbox" name="independent" value="independent" checked
+                            @click="filterSenators">Independent
+                    </label>
+                </div>
+
+                <table class="table table-striped">
+                    <thead>
+                        <th class="column width">Senator</th>
+                        <th class="column width">Party Affiliation</th>
+                        <th class="column width">State
+                            <form name="filter" id="FilterForm" action="" method="">
+                                <div id="select-filter">
+                                    <select id="state-filter" class="filter" v-on:change="filterSenators">
+                                        <option value="all">All</option>
+                                        <option v-for="state in states" :value='state'>{{state}}</option>
+                                    </select>
+                                </div>
+                            </form>
+                        </th>
+                        <th class="column width">Years in Office</th>
+                        <th class="column width">Percentage of Votes</th>
+                    </thead>
+
+                    <tbody id="table-body">
+                        <tr v-for="member in members">
+                            <td>{{member.first_name}} <span v-if="member.middle_name">{{member.middle_name}} </span>
+                                {{member.last_name}}</td>
+                            <td>{{member.party}}</td>
+                            <td>{{member.state}}</td>
+                            <td>{{member.seniority}}</td>
+                            <td>{{member.votes_with_party_pct}} %</td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
             </div>
-        </header>
-        <!--Table container-->
-        <div id="main">
-            <h2>Senators</h2>
-            <p>First convened in 1789, the composition and powers of the Senate are established in Article One of the
-                U.S.
-                Constitution. Each state is represented by two senators, regardless of population, who serve staggered
-                six-year terms. The Senate has several exclusive powers not granted to the House, including consenting
-                to
-                treaties as a precondition to their ratification and consenting to or confirming appointments of
-                Cabinet
-                secretaries, federal judges, other federal executive officials, military officers, regulatory
-                officials,
-                ambassadors, and other federal uniformed officers, as well as trial of federal officials impeached by
-                the
-                House.</p>
 
-            <div class="container-div">
-                <label id="headline" class="container">
-                    <input id="democrat-check" type="checkbox" name="democrat-check" value="democrat-check" checked
-                        @click="filterSenators">Democrate
-                    <input id="republican-check" type="checkbox" name="republican" value="republican" checked @click="filterSenators">Republican
-                    <input id="independent-check" type="checkbox" name="independent" value="independent" checked @click="filterSenators">Independent
-                </label>
-            </div>
+            <footer class="footer">
+                <p>&copy; 2018 TGIF | All Rights Reserved<p>
+            </footer>
 
-            <table class="table table-striped">
-                <thead>
-                    <th class="column width">Senator</th>
-                    <th class="column width">Party Affiliation</th>
-                    <th class="column width">State
-                        <form name="filter" id="FilterForm" action="" method="">
-                            <div id="select-filter">
-                                <select id="state-filter" class="filter" v-on:change="filterSenators">
-                                    <option value="all">All</option>
-                                    <option v-for="state in states" :value='state'>{{state}}</option>
-                                </select>
-                            </div>
-                        </form>
-                    </th>
-                    <th class="column width">Years in Office</th>
-                    <th class="column width">Percentage of Votes</th>
-                </thead>
-
-                <tbody id="table-body">
-                    <tr v-for="member in members">
-                        <td>{{member.first_name}} <span v-if="member.middle_name">{{member.middle_name}} </span>
-                            {{member.last_name}}</td>
-                        <td>{{member.party}}</td>
-                        <td>{{member.state}}</td>
-                        <td>{{member.seniority}}</td>
-                        <td>{{member.votes_with_party_pct}} %</td>
-                    </tr>
-
-                </tbody>
-
-            </table>
         </div>
 
-        <button id="myBtn" title="Go to top">Top</button>
-
-        <footer class="footer">
-            <p>&copy; 2018 TGIF | All Rights Reserved<p>
-        </footer>
+    </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <script src="js/main_vue.js"></script>
-
     <script>
-        var myVar;
 
         function myFunction() {
-            myVar = setTimeout(showPage, 3000);
+            myVar = setTimeout(showPage, 500);
         }
 
         function showPage() {
             document.getElementById("loader").style.display = "none";
             document.getElementById("myDiv").style.display = "block";
         }
+
     </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/main_vue.js"></script>
 </body>
 
 </html>
