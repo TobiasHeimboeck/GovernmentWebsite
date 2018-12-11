@@ -24,9 +24,6 @@ function startFetchingAsync(url) {
     }).then(function (json) {
         data = json;
 
-        console.log(1);
-        console.log(data);
-
         new Vue({
             el: "#main",
             data: {
@@ -38,6 +35,7 @@ function startFetchingAsync(url) {
                 dropdownStates: document.getElementById("states-dropdown"),
             },
             created() {
+                this.slider();
                 this.generateStatesList();
             },
             methods: {
@@ -69,9 +67,16 @@ function startFetchingAsync(url) {
 
                     this.states = statesArray.filter((v, i, a) => a.indexOf(v) === i).sort();
                 },
+                slider() {
+                    myVar = setTimeout(this.showPage, 500);
+                },
+                showPage() {
+                    document.getElementById("loader").style.display = "none";
+                    document.getElementById("myDiv").style.display = "block";
+                }
             }
         });
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log(error);
     })
 }

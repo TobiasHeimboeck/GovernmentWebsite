@@ -42,6 +42,8 @@ function startFetchingAsync(url) {
             },
             created() {
 
+                this.slider();
+
                 var democrats = this.getSenatorsWithSameParty("D");
                 var republicans = this.getSenatorsWithSameParty("R");
                 var independents = this.getSenatorsWithSameParty("I");
@@ -234,6 +236,13 @@ function startFetchingAsync(url) {
                             partyMembers.push(this.members[i]);
                     }
                     return partyMembers.length;
+                },
+                slider() {
+                    myVar = setTimeout(this.showPage, 500);
+                },
+                showPage() {
+                    document.getElementById("loader").style.display = "none";
+                    document.getElementById("myDiv").style.display = "block";
                 }
             }
         });

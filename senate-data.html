@@ -13,7 +13,7 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body onload="myFunction()">
+<body>
 
     <div class="content">
 
@@ -149,19 +149,6 @@
         </div>
 
     </div>
-    
-    <script>
-
-        function myFunction() {
-            myVar = setTimeout(showPage, 500);
-        }
-
-        function showPage() {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("myDiv").style.display = "block";
-        }
-
-    </script>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="js/main_vue.js"></script>
