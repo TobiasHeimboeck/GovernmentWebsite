@@ -35,7 +35,7 @@ function startFetchingAsync(url) {
                 dropdownStates: document.getElementById("states-dropdown"),
             },
             created() {
-                this.slider();
+                this.loader();
                 this.generateStatesList();
             },
             methods: {
@@ -67,7 +67,7 @@ function startFetchingAsync(url) {
 
                     this.states = statesArray.filter((v, i, a) => a.indexOf(v) === i).sort();
                 },
-                slider() {
+                loader() {
                     myVar = setTimeout(this.showPage, 500);
                 },
                 showPage() {
@@ -79,4 +79,18 @@ function startFetchingAsync(url) {
     }).catch(function (error) {
         console.log(error);
     })
+}
+
+scrollFunction();
+
+function scrollFunction() {
+    if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+        document.getElementById("myBtn").style.display = "block";
+    } else {
+        document.getElementById("myBtn").style.display = "none";
+    }
+}
+function topButton() {
+    document.body.scrollTop = 0;
+    document.documentElement.scrollTop = 0;
 }
