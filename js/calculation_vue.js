@@ -1,13 +1,21 @@
 let data;
 
+console.log(1);
+
 findValidPage();
 
 function findValidPage() {
     switch (location.href.split("/").slice(-1).toString()) {
-        case "vue-senate-loyalty.html":
+        case "senate-party-loyalty.html":
             startFetchingAsync("https://api.propublica.org/congress/v1/113/senate/members.json");
             break;
-        case "vue-house-loyalty.html":
+        case "senate-attendance.html":
+            startFetchingAsync("https://api.propublica.org/congress/v1/113/senate/members.json");
+            break;
+        case "house-attendance.html":
+            startFetchingAsync("https://api.propublica.org/congress/v1/113/house/members.json");
+            break;
+        case "house-party-loyalty.html":
             startFetchingAsync("https://api.propublica.org/congress/v1/113/house/members.json");
             break;
     }
@@ -59,15 +67,8 @@ function startFetchingAsync(url) {
                     independents_average_votes_with_party: this.getAverageVotes(independents),
                     least_loyal_members: this.getTenPercentOfVoters("lowest"),
                     most_loyal_members: this.getTenPercentOfVoters("highest"),
-                    most_loyal_names: this.getFullname(this.getTenPercentOfVoters("highest")),
-                    most_loyal_number_of_votes: this.getTotalCountOfVotes(this.getTenPercentOfVoters("highest")),
-                    most_loyal_percentage_party_votes: this.getPartyPercentage(this.getTenPercentOfVoters("highest")),
-                    least_engaged_names: this.getFullname(this.getTenPercentOfMissedVotes("top")),
-                    least_engaged_number_missed_votes: this.getMissedVotes(this.getTenPercentOfMissedVotes("top")),
-                    least_engaged_percentage_missed_votes: this.getMissedVotesPercentage(this.getTenPercentOfMissedVotes("top")),
-                    most_engaged_names: this.getFullname(this.getTenPercentOfMissedVotes("bottom")),
-                    most_engaged_number_missed_votes: this.getMissedVotes(this.getTenPercentOfMissedVotes("bottom")),
-                    most_engaged_percentage_missed_votes: this.getMissedVotesPercentage(this.getTenPercentOfMissedVotes("bottom")),
+                    least_engaged_members: this.getTenPercentOfMissedVotes("top"),
+                    most_engaged_members: this.getTenPercentOfMissedVotes("bottom"),
                     total_count: democrats.length + republicans.length + independents.length,
                     total_average_votes_with_party: total_average,
 

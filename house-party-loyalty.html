@@ -18,9 +18,9 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body>
+<body onload="myFunction()">
 
-    <div class="content">
+    <div id="main" class="content">
 
         <div class="col-sm-4 pic">
             <img class="img-responsive" src="img/headerimg.jpg">
@@ -70,91 +70,130 @@
             </div>
         </nav>
 
-        <div class="top-content">
-            <div class="top-left-table">
-                <h2>Party Loyalty</h2>
-                <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
-                    respectively,
-                    tend to be the most faithful in voting for their party's nominee for office and legislation that
-                    backs
-                    their party's agenda. </p>
+        <div id="loader"></div>
+
+        <div style="display:none;" id="myDiv" class="animate-bottom">
+
+            <div class="top-content">
+                <div class="top-left-table">
+                    <h2>Party Loyalty</h2>
+                    <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
+                        respectively,
+                        tend to be the most faithful in voting for their party's nominee for office and legislation
+                        that
+                        backs
+                        their party's agenda. </p>
+                </div>
+
+                <div class="top-right-table">
+                    <h2>Senate at a glance</h2>
+                    <table id="calc-t" class="calc-table">
+                        <thead>
+                            <tr>
+                                <th>Party</th>
+                                <th>Number of Reps</th>
+                                <th>% Voted with Party</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="republican-row">
+                                <td>Republicans</td>
+                                <td>{{statistics.republicans_count}}</td>
+                                <td>{{statistics.republicans_average_votes_with_party}}</td>
+                            </tr>
+                            <tr id="democrat-row">
+                                <td>Democrats</td>
+                                <td>{{statistics.democrats_count}}</td>
+                                <td>{{statistics.democrats_average_votes_with_party}}</td>
+                            </tr>
+                            <tr id="independent-row">
+                                <td>Independents</td>
+                                <td>{{statistics.independents_count}}</td>
+                                <td>{{statistics.independents_average_votes_with_party}}</td>
+                            </tr>
+                            <tr id="total-row">
+                                <td>Total</td>
+                                <td>{{statistics.total_count}}</td>
+                                <td>{{statistics.total_average_votes_with_party}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="top-right-table">
-                <h2>Senate at a glance</h2>
-                <table class="calc-table">
-                    <thead>
-                        <tr>
-                            <th>Party</th>
-                            <th>Number of Reps</th>
-                            <th>% Voted with Party</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr id="republican-row">
-                            <td>Republicans</td>
-                            <td>--</td>
-                            <td>--</td>
-                        </tr>
-                        <tr id="democrat-row">
-                            <td>Democrats</td>
-                            <td>--</td>
-                            <td>--</td>
-                        </tr>
-                        <tr id="independent-row">
-                            <td>Independents</td>
-                            <td>--</td>
-                            <td>--</td>
-                        </tr>
-                        <tr id="total-row">
-                            <td>Total</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <hr>
+
+            <div class="bottom-tables">
+                <div class="left-table">
+                    <h2>Least Loyal (Bottom 10% of Party)</h2>
+                    <table class="calc-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Number Party Votes</th>
+                                <th>% Party Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="least">
+
+                            <tr v-for="least_members in statistics.least_loyal_members">
+                                <td v-if="least_members.middle_name !== null"> <a :href="least_members.url">
+                                        {{least_members.first_name + " " +
+                                        least_members.middle_name + " " + least_members.last_name}}</a></td>
+                                <td v-else="least_members.middle_name === null"><a :href="least_members.url">{{least_members.first_name
+                                        + " " +
+                                        least_members.last_name}}</a></td>
+                                <td>{{least_members.total_votes}}</td>
+                                <td>{{least_members.votes_with_party_pct}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="right-table">
+                    <h2>Most Loyal (Top 10% of Party)</h2>
+                    <table class="calc-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Number Party Votes</th>
+                                <th>% Party Votes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="most">
+                            <tr v-for="most_members in statistics.most_loyal_members">
+                                <td v-if="most_members.middle_name !== null"><a :href="most_members.url">{{most_members.first_name
+                                        + " " +
+                                        most_members.middle_name + " " + most_members.last_name}}</a></td>
+                                <td v-else="most_members.middle_name === null"><a :href="most_members.url">{{most_members.first_name
+                                        + " " +
+                                        most_members.last_name}}</a></td>
+                                <td>{{most_members.total_votes}}</td>
+                                <td>{{most_members.votes_with_party_pct}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
 
-        <hr>
-
-        <div class="bottom-tables">
-            <div class="left-table">
-                <h2>Least Loyal (Bottom 10% of Party)</h2>
-                <table class="calc-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Number Party Votes</th>
-                            <th>% Party Votes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="least">
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="right-table">
-                <h2>Most Loyal (Top 10% of Party)</h2>
-                <table class="calc-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Number Party Votes</th>
-                            <th>% Party Votes</th>
-                        </tr>
-                    </thead>
-                    <tbody id="most">
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
 
-    <script src="js/pro-congress-113-house.js"></script>
-    <script src="js/calculation.js"></script>
+    <script>
+
+        function myFunction() {
+            myVar = setTimeout(showPage, 500);
+        }
+
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("myDiv").style.display = "block";
+        }
+
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/calculation_vue.js"></script>
 </body>
 
 </html>

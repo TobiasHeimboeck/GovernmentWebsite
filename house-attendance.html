@@ -18,8 +18,9 @@
         crossorigin="anonymous"></script>
 </head>
 
-<body>
-    <div class="content">
+<body onload="myFunction()">
+
+    <div id="main" class="content">
 
         <div class="col-sm-4 pic">
             <img class="img-responsive" src="img/headerimg.jpg">
@@ -69,92 +70,129 @@
             </div>
         </nav>
 
-        <div class="top-content">
-            <div class="top-left-table">
-                <h2>Attendance</h2>
-                <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
-                    respectively,
-                    tend to be the most faithful in voting for their party's nominee for office and legislation that
-                    backs
-                    their party's agenda. </p>
+        <div id="loader"></div>
+
+        <div style="display:none;" id="myDiv" class="animate-bottom">
+
+            <div class="top-content">
+                <div class="top-left-table">
+                    <h2>Attendance</h2>
+                    <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans
+                        respectively,
+                        tend to be the most faithful in voting for their party's nominee for office and legislation
+                        that
+                        backs
+                        their party's agenda. </p>
+                </div>
+
+                <div class="top-right-table">
+                    <h2>Senate at a glance</h2>
+                    <table class="calc-table">
+                        <thead>
+                            <tr>
+                                <th>Party</th>
+                                <th>Number of Reps</th>
+                                <th>% Voted with Prty</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr id="republican-row">
+                                <td>Republicans</td>
+                                <td>{{statistics.republicans_count}}</td>
+                                <td>{{statistics.republicans_average_votes_with_party}}</td>
+                            </tr>
+                            <tr id="democrat-row">
+                                <td>Democrats</td>
+                                <td>{{statistics.democrats_count}}</td>
+                                <td>{{statistics.democrats_average_votes_with_party}}</td>
+                            </tr>
+                            <tr id="independent-row">
+                                <td>Independents</td>
+                                <td>{{statistics.independents_count}}</td>
+                                <td>{{statistics.independents_average_votes_with_party}}</td>
+                            </tr>
+                            <tr id="total-row">
+                                <td>Total</td>
+                                <td>{{statistics.total_count}}</td>
+                                <td>{{statistics.total_average_votes_with_party}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
 
-            <div class="top-right-table">
-                <h2>Senate at a glance</h2>
-                <table class="calc-table">
-                    <thead>
-                        <tr>
-                            <th>Party</th>
-                            <th>Number of Reps</th>
-                            <th>% Voted with Prty</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr id="republican-row">
-                            <td>Republicans</td>
-                            <td>--</td>
-                            <td>--</td>
-                        </tr>
-                        <tr id="democrat-row">
-                            <td>Democrats</td>
-                            <td>--</td>
-                            <td>--</td>
-                        </tr>
-                        <tr id="independent-row">
-                            <td>Independents</td>
-                            <td>--</td>
-                            <td>--</td>
-                        </tr>
-                        <tr id="total-row">
-                            <td>Total</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <hr>
+
+            <div class="bottom-tables">
+                <div class="left-table">
+                    <h2>Least Engaged (Bottom 10% Attendance)</h2>
+                    <table class="calc-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>No. Missed Votes</th>
+                                <th>% Missed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="least-engaged">
+                            <tr v-for="least_engaged_mem in statistics.least_engaged_members">
+                                <td v-if="least_engaged_mem.middle_name !== null"> <a :href="least_engaged_mem.url">
+                                        {{least_engaged_mem.first_name + " " +
+                                        least_engaged_mem.middle_name + " " + least_engaged_mem.last_name}}</a></td>
+                                <td v-else="least_engaged_mem.middle_name === null"><a :href="least_engaged_mem.url">{{least_engaged_mem.first_name
+                                        + " " +
+                                        least_engaged_mem.last_name}}</a></td>
+                                <td>{{least_engaged_mem.missed_votes}}</td>
+                                <td>{{least_engaged_mem.missed_votes_pct}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="right-table">
+                    <h2>Most Engaged (Top 10% Attendance)</h2>
+                    <table class="calc-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>No. Missed Votes</th>
+                                <th>% Missed</th>
+                            </tr>
+                        </thead>
+                        <tbody id="most-engaged">
+                            <tr v-for="most_engaged_mem in statistics.most_engaged_members">
+                                <td v-if="most_engaged_mem.middle_name !== null"> <a :href="most_engaged_mem.url">
+                                        {{most_engaged_mem.first_name + " " +
+                                        most_engaged_mem.middle_name + " " + most_engaged_mem.last_name}}</a></td>
+                                <td v-else="most_engaged_mem.middle_name === null"><a :href="most_engaged_mem.url">{{most_engaged_mem.first_name
+                                        + " " +
+                                        most_engaged_mem.last_name}}</a></td>
+                                <td>{{most_engaged_mem.missed_votes}}</td>
+                                <td>{{most_engaged_mem.missed_votes_pct}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-        </div>
 
-        <hr>
-
-        <div class="bottom-tables">
-            <div class="left-table">
-                <h2>Least Engaged (Bottom 10% Attendance)</h2>
-                <table class="calc-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>No. Missed Votes</th>
-                            <th>% Missed</th>
-                        </tr>
-                    </thead>
-                    <tbody id="least-engaged">
-
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="right-table">
-                <h2>Most Engaged (Top 10% Attendance)</h2>
-                <table class="calc-table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>No. Missed Votes</th>
-                            <th>% Missed</th>
-                        </tr>
-                    </thead>
-                    <tbody id="most-engaged">
-
-                    </tbody>
-                </table>
-            </div>
         </div>
 
     </div>
 
-    <script src="js/pro-congress-113-house.js"></script>
-    <script src="js/calculation.js"></script>
+    <script>
+
+        function myFunction() {
+            myVar = setTimeout(showPage, 500);
+        }
+
+        function showPage() {
+            document.getElementById("loader").style.display = "none";
+            document.getElementById("myDiv").style.display = "block";
+        }
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/calculation_vue.js"></script>
 </body>
 
 </html>
