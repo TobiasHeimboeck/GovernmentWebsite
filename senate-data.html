@@ -69,9 +69,9 @@
         </nav>
 
 
-        <div id="loader"></div>
+        <div id="loader" ref="loader"></div>
 
-        <div style="display:none;" id="myDiv" class="animate-bottom">
+        <div style="display:none;" id="myDiv" ref="myDiv" class="animate-bottom">
 
 
             <header>
@@ -100,12 +100,12 @@
 
                 <div class="container-div">
                     <label id="headline" class="container">
-                        <input id="democrat-check" type="checkbox" name="democrat-check" value="democrat-check" checked
-                            @click="filterSenators">Democrate
-                        <input id="republican-check" type="checkbox" name="republican" value="republican" checked
-                            @click="filterSenators">Republican
-                        <input id="independent-check" type="checkbox" name="independent" value="independent" checked
-                            @click="filterSenators">Independent
+                        <input id="democrat_check" v-model="checkBoxes" ref="democrat_check" type="checkbox" name="democrat-check"
+                            value="democrat_check" checked @click="filterSenators">Democrate
+                        <input id="republican_check" v-model="checkBoxes" ref="republican_check" type="checkbox" name="republican"
+                            value="republican" checked @click="filterSenators">Republican
+                        <input id="independent_check" v-model="checkBoxes" ref="independent_check" type="checkbox" name="independent"
+                            value="independent" checked @click="filterSenators">Independent
                     </label>
                 </div>
 

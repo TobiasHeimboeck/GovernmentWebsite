@@ -107,6 +107,15 @@ footer {
     color: lightblue;
 }
 
+#total-row {
+    font-weight: bold;
+    background-color: darkgray;
+}
+
+#table-heading {
+    font-size: 20px;
+}
+
 .select {
     width: 100px;
     border-radius: 0;
