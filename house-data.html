@@ -15,7 +15,7 @@
 
 <body>
 
-    <div class="content">
+    <div id="main" class="content">
 
         <div class="col-sm-4 pic">
             <img class="img-responsive" src="img/headerimg.jpg">
@@ -26,46 +26,7 @@
             <a href="mailto:berenguer.pou@gmail.com"><span class="glyphicon glyphicon-envelope"></span></a> <a href="mailto:berenguer.pou@gmail.com">info@tgif.net</a>
         </div>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li id="selected" class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Congress 113
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="senate-data.html">Senate</a>
-                            <a class="dropdown-item" href="house-data.html">House</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Attendance
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="senate-attendance.html">Senate</a>
-                            <a class="dropdown-item" href="house-attendance.html">House</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Party Loyalty
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="senate-party-loyalty.html">Senate</a>
-                            <a class="dropdown-item" href="house-party-loyalty.html">House</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-
+        <navbar active="house-data"></navbar>
 
         <div id="loader"></div>
 
@@ -77,7 +38,7 @@
                 </div>
             </header>
             <!--Table container-->
-            <div id="main">
+            <div>
                 <h2>House</h2>
                 <p>First convened in 1789, the composition and powers of the Senate are established in Article One of
                     the
@@ -117,7 +78,7 @@
                                 <div id="select-filter">
                                     <select id="state-filter" class="filter" v-on:change="filterSenators">
                                         <option value="all">All</option>
-                                        <option v-for="state in states" :value='state'>{{state}}</option>
+                                        <option v-for="state in states">{{state}}</option>
                                     </select>
                                 </div>
                             </form>
@@ -141,13 +102,10 @@
                 </table>
             </div>
 
-            <footer class="footer">
-                <p>&copy; 2018 TGIF | All Rights Reserved<p>
-            </footer>
+            <custom_footer></custom_footer>
 
         </div>
 
-    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>

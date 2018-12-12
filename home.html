@@ -16,7 +16,7 @@
 
 <body>
 
-    <div class="content">
+    <div id="nav" class="content">
 
         <div class="col-sm-4 pic">
 
@@ -29,45 +29,7 @@
             <a href="mailto:berenguer.pou@gmail.com">info@tgif.net</a>
         </div>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
-                <ul class="navbar-nav">
-                    <li id="selected" class="nav-item active">
-                        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Congress 113
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="senate-data.html">Senate</a>
-                            <a class="dropdown-item" href="house-data.html">House</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Attendance
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="senate-attendance.html">Senate</a>
-                            <a class="dropdown-item" href="...">House</a>
-                        </div>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Party Loyalty
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                            <a class="dropdown-item" href="senate-party-loyalty.html">Senate</a>
-                            <a class="dropdown-item" href="house-party-loyalty.html">House</a>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-        </nav>
+        <navbar active="home"></navbar>
 
         <div class="homeimg">
             <img src="img/homeimg.jpg" alt="homeimg">
@@ -148,12 +110,12 @@
                         Acts (AIAs) or equivalent laws were passed in Denmark and Norway in 1970.</p>
             </div>
 
-            <footer class="footer">
-                <p>&copy; 2018 TGIF | All Rights Reserved<p>
-            </footer>
+            <custom_footer></custom_footer>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="js/components.js"></script>
     <script>
         var button = document.getElementById("activeButton");
         var boolean = false;
