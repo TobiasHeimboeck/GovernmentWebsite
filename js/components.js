@@ -3,15 +3,14 @@ Vue.component("navbar", {
     methods: {
         activePage: function () {
 
-            if (this.active === "home") {
+            if (this.active === "home")
                 return "home";
-            } else if (this.active === "data") {
+            else if (this.active === "data")
                 return "data";
-            } else if (this.active === "attendance") {
+            else if (this.active === "attendance")
                 return "attendance";
-            } else if (this.active === "loyalty") {
+            else if (this.active === "loyalty")
                 return "loyalty";
-            }
         }
     },
     template: `
