@@ -31,32 +31,32 @@ Vue.component("navbar", {
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="senate-data.html">Senate</a>
                         <a class="dropdown-item" href="house-data.html">House</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown attendance" :class="{ selected : activePage() === 'attendance' }">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        </div>
+                        </li>
+                        <li class="nav-item dropdown attendance" :class="{ selected : activePage() === 'attendance' }">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Attendance
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="senate-attendance.html">Senate</a>
                         <a class="dropdown-item" href="house-attendance.html">House</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown loyalty" :class="{ selected : activePage() === 'loyalty' }">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                        </div>
+                        </li>
+                        <li class="nav-item dropdown loyalty" :class="{ selected : activePage() === 'loyalty' }">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Party Loyalty
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="senate-party-loyalty.html">Senate</a>
                         <a class="dropdown-item" href="house-party-loyalty.html">House</a>
-                    </div>
-                </li>
-            </ul>
-        </div>
-    </nav>
-    `
+                        </div>
+                        </li>
+                        </ul>
+                        </div>
+                        </nav>
+                        `
 });
 
 Vue.component("custom_footer", {
@@ -79,6 +79,7 @@ var main = new Vue({
     created() {
         this.findValidPage();
         this.loader();
+        this.test();
     },
     // section to create functions
     methods: {
@@ -150,7 +151,6 @@ var main = new Vue({
             }
 
             this.members = senatorsArray;
-
         },
         /**
          * function to get all states from the jsom 
@@ -163,7 +163,6 @@ var main = new Vue({
                 statesArray.push(this.allMembers[i].state);
 
             this.states = statesArray.filter((v, i, a) => a.indexOf(v) === i).sort();
-
         },
         /**
          * function to create a page loader
