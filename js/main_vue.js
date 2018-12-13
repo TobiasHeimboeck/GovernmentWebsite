@@ -59,6 +59,42 @@ Vue.component("navbar", {
     `
 });
 
+Vue.component("data_table", {
+    template: `
+    <table class="table table-striped">
+    <thead>
+        <th class="column width">Senator</th>
+        <th class="column width">Party Affiliation</th>
+        <th class="column width">State
+            <form name="filter" id="FilterForm">
+                <div id="select-filter">
+                    <select id="state-filter" class="filter" v-on:change='this.filterSenators()'>
+                        <option value='all'>All</option>
+                        <option v-for='state in this.states' :value='state'>{{state}}</option>
+                    </select>
+                </div>
+            </form>
+        </th>
+        <th class="column width">Years in Office</th>
+        <th class="column width">Percentage of Votes</th>
+    </thead>
+
+    <tbody id="table-body">
+        <tr v-for="member in this.members">
+            <td>{{member.first_name}} <span v-if='member.middle_name'>{{member.middle_name}} </span>
+                {{member.last_name}}</td>
+            <td>{{member.party}}</td>
+            <td>{{member.state}}</td>
+            <td>{{member.seniority}}</td>
+            <td>{{member.votes_with_party_pct}} %</td>
+        </tr>
+
+    </tbody>
+
+</table>
+    `
+});
+
 Vue.component("custom_footer", {
     template: '<footer class="footer"> <p> &copy; 2018 TGIF All Rights Reserved </p> </footer>'
 });
@@ -72,11 +108,11 @@ var main = new Vue({
         checkboxDemocrat: null,
         checkboxRepublican: null,
         checkboxIndependent: null,
+        states: [],
     },
     created() {
         this.findValidPage();
         this.loader();
-        this.generateStatesList();
     },
     methods: {
         findValidPage() {
@@ -102,7 +138,9 @@ var main = new Vue({
                 data = json;
                 main.members = data.results[0].members;
                 main.allMembers = data.results[0].members;
-                main.loadCheckboxes()
+                main.loadCheckboxes();
+                main.generateStatesList();
+                console.log(main.members);
             }).catch(function (error) {
                 console.log(error);
             })
@@ -114,19 +152,21 @@ var main = new Vue({
         },
         filterSenators() {
 
+            console.log(this.allMembers);
+
             var senatorsArray = [];
 
             for (var i = 0; i < this.allMembers.length; i++) {
 
-                if (document.getElementById("state-filter").value === this.allMembers[i].state || document.getElementById("state-filter").value === "all") {
+                if (this.$refs.state_filter.value === this.allMembers[i].state || this.$refs.state_filter.value === "all") {
 
-                    if (document.getElementById("democrat_check").checked && this.allMembers[i].party === "D") {
+                    if(this.$refs.democrat_check.checked && this.allMembers[i].party === "D")
                         senatorsArray.push(this.allMembers[i]);
-                    } else if (document.getElementById("republican_check").checked && this.allMembers[i].party === "R") {
+                    else if (this.$refs.republican_check.checked && this.allMembers[i].party === "R") 
                         senatorsArray.push(this.allMembers[i]);
-                    } else if (document.getElementById("independent_check").checked && this.allMembers[i].party === "I") {
+                    else if (this.$refs.independent_check.checked && this.allMembers[i].party === "I")
                         senatorsArray.push(this.allMembers[i]);
-                    }
+
                 }
             }
 
