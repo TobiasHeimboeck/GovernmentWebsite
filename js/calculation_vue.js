@@ -1,4 +1,4 @@
-let data;
+let data; // represents the data from the ajax api
 
 Vue.component("navbar", {
     props: ["active"],
@@ -63,6 +63,7 @@ Vue.component("custom_footer", {
     template: '<footer class="footer"> <p> &copy; 2018 TGIF All Rights Reserved </p> </footer>'
 });
 
+// vue instance
 var main = new Vue({
     el: "#main",
     data: {
@@ -77,11 +78,17 @@ var main = new Vue({
         total_average: 0,
         statistics: {},
     },
+    // function called when the page is loaded
     created() {
         this.findValidPage();
         this.loader();
     },
+    // section to create functions
     methods: {
+        /**
+         * This function is to find the 
+         * right url to load the json data
+         */
         findValidPage() {
             switch (location.href.split("/").slice(-1).toString()) {
                 case "senate-party-loyalty.html":
@@ -98,12 +105,18 @@ var main = new Vue({
                     break;
             }
         },
+        /**
+         * This function start the json-data fetching process
+         * @param {*} url of the json api
+         */
         startFetchingAsync(url) {
             fetch(url, {
                 method: "GET",
                 headers: new Headers({
+                    // Authorization key for the api
                     "X-API-Key": "adZUIoKPgkk0ecKXE0ztm9ErLNJgARlsKHBhTBYa"
                 })
+                // compare the reponse to json
             }).then(function (response) {
                 return response.json();
             }).then(function (json) {
@@ -146,13 +159,24 @@ var main = new Vue({
                 console.log(error);
             })
         },
+        /**
+         * function to create a page loader
+         */
         loader() {
             setTimeout(this.showPage, 500);
         },
+        /**
+         * function to show the page content 
+         * if the loader is complete
+         */
         showPage() {
             this.$refs.loader.style.display = "none";
             this.$refs.myDiv.style.display = "block";
         },
+        /**
+         * function to get the averafe of the votes of a party
+         * @param {*} party array
+         */
         getAverageVotes(party) {
             var average = 0;
 
@@ -165,6 +189,9 @@ var main = new Vue({
                 return Math.round(average / party.length * 100) / 100;
             }
         },
+        /**
+         * get a array with senators who have the same party
+         */
         getSenatorsWithSameParty(party) {
             var senatorsWithSameParty = [];
             for (var i = 0; i < this.members.length; i++) {
@@ -173,6 +200,10 @@ var main = new Vue({
             }
             return senatorsWithSameParty;
         },
+        /**
+         * get ten percent of voters
+         * @param {*} type to switch between bottom, lowest and highest
+         */
         getTenPercentOfVoters(type) {
             var votes = [];
             var tenPercent = [];
@@ -195,6 +226,10 @@ var main = new Vue({
                     return this.sortingContent(tenPercent, votes);
             }
         },
+        /**
+         * get ten percent of missed votes
+         * @param {*} type to switch between bottom and top
+         */
         getTenPercentOfMissedVotes(type) {
             var votes = [];
             var responseArray = [];
@@ -213,6 +248,11 @@ var main = new Vue({
                     return this.sortingContent(responseArray, votes);
             }
         },
+        /**
+         * function to sort the array
+         * @param {*} array
+         * @param {*} votesArray 
+         */
         sortingContent(array, votesArray) {
             for (var i = 0; i < this.members.length; i++)
                 votesArray.push(this.members[i]);

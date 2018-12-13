@@ -88,10 +88,10 @@ var main = new Vue({
          */
         findValidPage() {
             switch (location.href.split("/").slice(-1).toString()) {
-                case "senate-data.html":
+                case "senate-data.html": // api url for the senate
                     this.startFetchingAsync("https://api.propublica.org/congress/v1/113/senate/members.json");
                     break;
-                case "house-data.html":
+                case "house-data.html": // api url for the house
                     this.startFetchingAsync("https://api.propublica.org/congress/v1/113/house/members.json");
                     break;
             }
@@ -104,8 +104,10 @@ var main = new Vue({
             fetch(url, {
                 method: "GET",
                 headers: new Headers({
+                    // Authorization key for the api
                     "X-API-Key": "adZUIoKPgkk0ecKXE0ztm9ErLNJgARlsKHBhTBYa"
                 })
+                // compare the reponse to json
             }).then(function (response) {
                 return response.json();
             }).then(function (json) {
