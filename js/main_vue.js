@@ -59,46 +59,11 @@ Vue.component("navbar", {
     `
 });
 
-Vue.component("data_table", {
-    template: `
-    <table class="table table-striped">
-    <thead>
-        <th class="column width">Senator</th>
-        <th class="column width">Party Affiliation</th>
-        <th class="column width">State
-            <form name="filter" id="FilterForm">
-                <div id="select-filter">
-                    <select id="state-filter" class="filter" v-on:change='this.filterSenators()'>
-                        <option value='all'>All</option>
-                        <option v-for='state in this.states' :value='state'>{{state}}</option>
-                    </select>
-                </div>
-            </form>
-        </th>
-        <th class="column width">Years in Office</th>
-        <th class="column width">Percentage of Votes</th>
-    </thead>
-
-    <tbody id="table-body">
-        <tr v-for="member in this.members">
-            <td>{{member.first_name}} <span v-if='member.middle_name'>{{member.middle_name}} </span>
-                {{member.last_name}}</td>
-            <td>{{member.party}}</td>
-            <td>{{member.state}}</td>
-            <td>{{member.seniority}}</td>
-            <td>{{member.votes_with_party_pct}} %</td>
-        </tr>
-
-    </tbody>
-
-</table>
-    `
-});
-
 Vue.component("custom_footer", {
     template: '<footer class="footer"> <p> &copy; 2018 TGIF All Rights Reserved </p> </footer>'
 });
 
+// vue instance
 var main = new Vue({
     el: "#main",
     data: {
@@ -110,11 +75,17 @@ var main = new Vue({
         checkboxIndependent: null,
         states: [],
     },
+    // function called when the page is loaded
     created() {
         this.findValidPage();
         this.loader();
     },
+    // section to create functions
     methods: {
+        /**
+         * This function is to find the 
+         * right url to load the json data
+         */
         findValidPage() {
             switch (location.href.split("/").slice(-1).toString()) {
                 case "senate-data.html":
@@ -125,6 +96,10 @@ var main = new Vue({
                     break;
             }
         },
+        /**
+         * This function start the json-data fetching process
+         * @param {*} url of the json api
+         */
         startFetchingAsync(url) {
             fetch(url, {
                 method: "GET",
@@ -134,45 +109,51 @@ var main = new Vue({
             }).then(function (response) {
                 return response.json();
             }).then(function (json) {
-
                 data = json;
                 main.members = data.results[0].members;
                 main.allMembers = data.results[0].members;
                 main.loadCheckboxes();
                 main.generateStatesList();
-                console.log(main.members);
             }).catch(function (error) {
                 console.log(error);
             })
         },
+        /**
+         * function to get the filter check-box html elements
+         * and store them in the variables {@var checkboxDemocrat, @var checkboxRepublican, @var checkboxIndependent}
+         */
         loadCheckboxes() {
             this.checkboxDemocrat = this.$refs.democrat_check;
             this.checkboxRepublican = this.$refs.republican_check;
             this.checkboxIndependent = this.$refs.independent_check;
         },
+        /**
+         * function to handle to checkbox filter 
+         * for the senators.
+         */
         filterSenators() {
-
-            console.log(this.allMembers);
 
             var senatorsArray = [];
 
             for (var i = 0; i < this.allMembers.length; i++) {
-
                 if (this.$refs.state_filter.value === this.allMembers[i].state || this.$refs.state_filter.value === "all") {
-
-                    if(this.$refs.democrat_check.checked && this.allMembers[i].party === "D")
+                    if (this.$refs.democrat_check.checked && this.allMembers[i].party === "D") {
                         senatorsArray.push(this.allMembers[i]);
-                    else if (this.$refs.republican_check.checked && this.allMembers[i].party === "R") 
+                    } else if (this.$refs.republican_check.checked && this.allMembers[i].party === "R") {
                         senatorsArray.push(this.allMembers[i]);
-                    else if (this.$refs.independent_check.checked && this.allMembers[i].party === "I")
+                    } else if (this.$refs.independent_check.checked && this.allMembers[i].party === "I") {
                         senatorsArray.push(this.allMembers[i]);
-
+                    }
                 }
             }
 
             this.members = senatorsArray;
 
         },
+        /**
+         * function to get all states from the jsom 
+         * data and store them in the {@var states} array.
+         */
         generateStatesList() {
             var statesArray = [];
 
@@ -182,12 +163,19 @@ var main = new Vue({
             this.states = statesArray.filter((v, i, a) => a.indexOf(v) === i).sort();
 
         },
+        /**
+         * function to create a page loader
+         */
         loader() {
-            myVar = setTimeout(this.showPage, 500);
+            setTimeout(this.showPage, 500);
         },
+        /**
+         * function to show the page content 
+         * if the loader is complete
+         */
         showPage() {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("myDiv").style.display = "block";
+            this.$refs.loader.style.display = "none";
+            this.$refs.myDiv.style.display = "block";
         }
     }
 });

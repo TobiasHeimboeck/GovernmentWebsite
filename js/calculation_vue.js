@@ -147,11 +147,11 @@ var main = new Vue({
             })
         },
         loader() {
-            myVar = setTimeout(this.showPage, 500);
+            setTimeout(this.showPage, 500);
         },
         showPage() {
-            document.getElementById("loader").style.display = "none";
-            document.getElementById("myDiv").style.display = "block";
+            this.$refs.loader.style.display = "none";
+            this.$refs.myDiv.style.display = "block";
         },
         getAverageVotes(party) {
             var average = 0;

@@ -60,16 +60,16 @@
 
                 <div class="container-div">
                     <label id="headline" class="container">
-                        <input id="democrat_check" ref="democrat_check" type="checkbox" name="democrat-check"
-                            value="democrat_check" checked @click="filterSenators">Democrate
-                        <input id="republican_check" ref="republican_check" type="checkbox" name="republican"
-                            value="republican" checked @click="filterSenators">Republican
-                        <input id="independent_check" ref="independent_check" type="checkbox" name="independent"
-                            value="independent" checked @click="filterSenators">Independent
+                        <input id="democrat_check" ref="democrat_check" type="checkbox" name="democrat-check" value="democrat_check"
+                            checked @click="filterSenators">Democrate
+                        <input id="republican_check" ref="republican_check" type="checkbox" name="republican" value="republican"
+                            checked @click="filterSenators">Republican
+                        <input id="independent_check" ref="independent_check" type="checkbox" name="independent" value="independent"
+                            checked @click="filterSenators">Independent
                     </label>
                 </div>
 
-                <!-- <data_table></data_table> -->
+                <!-- <things array="members"></things> -->
 
                 <table class="table table-striped">
                     <thead>
@@ -88,7 +88,6 @@
                         <th class="column width">Years in Office</th>
                         <th class="column width">Percentage of Votes</th>
                     </thead>
-
                     <tbody id="table-body">
                         <tr v-for="member in members">
                             <td>{{member.first_name}} <span v-if="member.middle_name">{{member.middle_name}} </span>
@@ -98,9 +97,7 @@
                             <td>{{member.seniority}}</td>
                             <td>{{member.votes_with_party_pct}} %</td>
                         </tr>
-
                     </tbody>
-
                 </table>
 
             </div>
