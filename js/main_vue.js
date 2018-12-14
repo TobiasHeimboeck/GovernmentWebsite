@@ -79,7 +79,6 @@ var main = new Vue({
     created() {
         this.findValidPage();
         this.loader();
-        this.test();
     },
     // section to create functions
     methods: {
